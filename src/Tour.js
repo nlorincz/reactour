@@ -156,6 +156,7 @@ function Tour({
   }
 
   function close(e) {
+    setCurrent(startAt)
     if (onBeforeClose && typeof onBeforeClose === 'function') {
       onBeforeClose(helper.current)
     }

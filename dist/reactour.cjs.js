@@ -806,6 +806,7 @@ function Tour(_ref) {
   }
 
   function close(e) {
+    setCurrent(startAt);
     if (onBeforeClose && typeof onBeforeClose === 'function') {
       onBeforeClose(helper.current);
     }
