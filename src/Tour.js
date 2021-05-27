@@ -179,8 +179,11 @@ function Tour({
     const { w, h } = getWindow()
 
     if (step.actionBefore && typeof step.actionBefore === 'function') {
+      console.log('NRB before')
       await step.actionBefore()
+      console.log('NRB after')
     }
+    setTimeout(()=>{console.log('NRB done'), this.wait})
 
     const node = step.selector ? document.querySelector(step.selector) : null
 

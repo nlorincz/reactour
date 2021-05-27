@@ -47,6 +47,7 @@ export const propTypes = {
       ]),
       action: PropTypes.func,
       actionBefore: PropTypes.func,
+      wait: PropTypes.number,
       style: PropTypes.object,
       stepInteraction: PropTypes.bool,
       navDotAriaLabel: PropTypes.string,
