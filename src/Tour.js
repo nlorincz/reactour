@@ -176,14 +176,13 @@ function Tour({
 
   async function showStep(nextStep) {
     const step = steps[nextStep] || steps[current]
-    const { w, h } = getWindow()
-
     if (step.actionBefore && typeof step.actionBefore === 'function') {
       console.log('NRB before')
       await step.actionBefore()
       console.log('NRB after')
     }
-    setTimeout(()=>{console.log('NRB done'), this.wait})
+    
+    const { w, h } = getWindow()
 
     const node = step.selector ? document.querySelector(step.selector) : null
 
