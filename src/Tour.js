@@ -176,10 +176,9 @@ function Tour({
 
   async function showStep(nextStep) {
     const step = steps[nextStep] || steps[current]
-    let done = false
     if (step.actionBefore && typeof step.actionBefore === 'function') {
-      console.log('NRB before')
-      done = await step.actionBefore()
+      console.log('NRB before') 
+      await step.actionBefore()
       console.log('NRB after')
     }
     let waitTimes=0;
