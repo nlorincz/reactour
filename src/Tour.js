@@ -181,11 +181,11 @@ function Tour({
       await step.actionBefore()
       console.log('NRB after')
     }
-    
+
     const { w, h } = getWindow()
 
     const node = step.selector ? document.querySelector(step.selector) : null
-
+    console.log('NRB TOUR', node);
     if (step.observe) {
       observer.current = document.querySelector(step.observe)
     }
