@@ -177,65 +177,54 @@ function Tour({
   async function showStep(nextStep) {
     const step = steps[nextStep] || steps[current]
     if (step.actionBefore && typeof step.actionBefore === 'function') {
-      console.log('NRB before') 
+      console.log('NRB before')
       await step.actionBefore()
       console.log('NRB after')
     }
-    let waitTimes=0;
-    clearInterval(interval)
+    const { w, h } = getWindow()
 
-    const interval = setInterval(() => {
-        const { w, h } = getWindow()
+    const node = step.selector ? document.querySelector(step.selector) : null
+    console.log('NRB TOUR', node);
+    if (step.observe) {
+      observer.current = document.querySelector(step.observe)
+    }
 
-        const node = step.selector ? document.querySelector(step.selector) : null
-        if (!node && step.wait &&  waitTimes < step.wait) {
-          waitTimes++
-          return;
-        }
-        clearInterval(interval)
+    if (node) {
+      // DOM node exists
+      const nodeRect = getNodeRect(node)
 
-        console.log('NRB TOUR', node);
-        if (step.observe) {
-          observer.current = document.querySelector(step.observe)
-        }
-    
-        if (node) {
-          // DOM node exists
-          const nodeRect = getNodeRect(node)
-    
-          // step is outside view
-          if (!inView({ ...nodeRect, w, h, threshold: inViewThreshold })) {
-            const parentScroll = Scrollparent(node)
-            const offset = scrollOffset
-              ? scrollOffset
-              : nodeRect.height > h
-              ? -25
-              : -(h / 2) + nodeRect.height / 2
-            scrollSmooth.to(node, {
-              context: isBody(parentScroll) ? window : parentScroll,
-              duration: scrollDuration,
-              offset,
-              callback: _node => {
-                makeCalculations(getNodeRect(_node), step.position)
-              },
-            })
-          } else {
-            makeCalculations(nodeRect, step.position)
-          }
-        } else {
-          dispatch({
-            type: 'NO_DOM_NODE',
-            helperPosition: step.position,
-            w,
-            h,
-            inDOM: false,
-          })
-        }
-    
-        if (step.action && typeof step.action === 'function') {
-          await step.action(node)
-        }
-    }, step.wait ? 500: 0)
+      // step is outside view
+      if (!inView({ ...nodeRect, w, h, threshold: inViewThreshold })) {
+        const parentScroll = Scrollparent(node)
+        const offset = scrollOffset
+          ? scrollOffset
+          : nodeRect.height > h
+          ? -25
+          : -(h / 2) + nodeRect.height / 2
+        scrollSmooth.to(node, {
+          context: isBody(parentScroll) ? window : parentScroll,
+          duration: scrollDuration,
+          offset,
+          callback: _node => {
+            makeCalculations(getNodeRect(_node), step.position)
+          },
+        })
+      } else {
+        makeCalculations(nodeRect, step.position)
+      }
+    } else {
+      dispatch({
+        type: 'NO_DOM_NODE',
+        helperPosition: step.position,
+        w,
+        h,
+        inDOM: false,
+      })
+    }
+
+    if (step.action && typeof step.action === 'function') {
+      await step.action(node)
+    }
   }
 
   function makeCalculations(nodeRect, helperPosition) {
