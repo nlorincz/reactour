@@ -182,13 +182,19 @@ function Tour({
       done = await step.actionBefore()
       console.log('NRB after')
     }
+    let waitTimes=0;
+    clearInterval(interval)
 
     const interval = setInterval(() => {
-      if(done){
-        clearInterval(interval)
         const { w, h } = getWindow()
 
         const node = step.selector ? document.querySelector(step.selector) : null
+        if (!node && step.wait &&  waitTimes < step.wait) {
+          waitTimes++
+          return;
+        }
+        clearInterval(interval)
+
         console.log('NRB TOUR', node);
         if (step.observe) {
           observer.current = document.querySelector(step.observe)
@@ -230,8 +236,7 @@ function Tour({
         if (step.action && typeof step.action === 'function') {
           await step.action(node)
         }
-      }
-    }, 300)
+    }, step.wait ? 500: 0)
   }
 
   function makeCalculations(nodeRect, helperPosition) {
