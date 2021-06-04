@@ -160,6 +160,8 @@ function Tour({
       onBeforeClose(helper.current)
     }
     onRequestClose(e)
+    window.removeEventListener('keydown', keyHandler)
+    window.removeEventListener('resize', debouncedShowStep)
   }
 
   function nextStep() {
@@ -176,16 +178,13 @@ function Tour({
 
   async function showStep(nextStep) {
     const step = steps[nextStep] || steps[current]
+
+    const { w, h } = getWindow()
     if (step.actionBefore && typeof step.actionBefore === 'function') {
-      console.log('NRB before')
       await step.actionBefore()
-      console.log('NRB after')
     }
-    setTimeout(() => {
-      const { w, h } = getWindow()
 
       const node = step.selector ? document.querySelector(step.selector) : null
-      console.log('NRB TOUR', node);
       if (step.observe) {
         observer.current = document.querySelector(step.observe)
       }
@@ -226,7 +225,6 @@ function Tour({
       if (step.action && typeof step.action === 'function') {
         await step.action(node)
       }
-    }, 2000);
   }
 
   function makeCalculations(nodeRect, helperPosition) {
