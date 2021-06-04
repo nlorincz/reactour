@@ -118,7 +118,7 @@ class Tour extends Component {
     )
   }
 
-  showStep = () => {
+  showStep = async () => {
     if (!this.helper || !this.helper.current) return
     const { steps } = this.props
     const { current, focusUnlocked } = this.state
@@ -128,6 +128,9 @@ class Tour extends Component {
       })
     }
     const step = steps[current]
+    if (step.actionBefore && typeof step.actionBefore === 'function') {
+      await step.actionBefore()
+    }
     const node = step.selector ? document.querySelector(step.selector) : null
 
     const stepCallback = (o) => {
