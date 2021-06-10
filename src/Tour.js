@@ -129,7 +129,7 @@ class Tour extends Component {
     }
     const step = steps[current]
     if (step.actionBefore && typeof step.actionBefore === 'function') {
-      await step.actionBefore()
+      await step.actionBefore().catch(() => this.nextStep())
     }
     const node = step.selector ? document.querySelector(step.selector) : null
 
@@ -585,7 +585,6 @@ class Tour extends Component {
 
 const setNodeState = (node, step, helper) => {
   if (!helper) return
-  
   const w = Math.max(
     document.documentElement.clientWidth,
     window.innerWidth || 0
