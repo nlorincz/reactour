@@ -483,12 +483,12 @@ class Tour extends Component {
                   current={current}
                   totalSteps={steps.length}
                   gotoStep={this.gotoStep}
-                  close={onRequestClose}
+                  close={() => onRequestClose(this.state.current)}
                   content={
                     steps[current] &&
                     (typeof steps[current].content === 'function'
                       ? steps[current].content({
-                          close: onRequestClose,
+                          close: () => onRequestClose(this.state.current),
                           goTo: this.gotoStep,
                           inDOM,
                           step: current + 1,
@@ -581,7 +581,7 @@ class Tour extends Component {
 
                   {showCloseButton ? (
                     <Close
-                      onClick={onRequestClose}
+                      onClick={() => onRequestClose(this.state.current)}
                       className="reactour__close"
                     />
                   ) : null}
