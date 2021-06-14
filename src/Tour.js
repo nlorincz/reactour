@@ -279,7 +279,7 @@ class Tour extends Component {
       closeWithMask &&
       !e.target.classList.contains(CN.mask.disableInteraction)
     ) {
-      onRequestClose(current, e)
+      onRequestClose(this.state.current, e)
     }
   }
 
