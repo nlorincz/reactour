@@ -65,7 +65,7 @@ class Tour extends Component {
       if (nextProps.steps[this.state.current]) {
         setTimeout(this.showStep, updateDelay)
       } else {
-        this.props.onRequestClose()
+        this.props.onRequestClose(this.state.current)
       }
     }
 
@@ -279,7 +279,7 @@ class Tour extends Component {
       closeWithMask &&
       !e.target.classList.contains(CN.mask.disableInteraction)
     ) {
-      onRequestClose(e)
+      onRequestClose(current, e)
     }
   }
 
@@ -357,7 +357,7 @@ class Tour extends Component {
     if (e.keyCode === 27 && !isEscDisabled) {
       // esc
       e.preventDefault()
-      onRequestClose()
+      onRequestClose(this.state.current)
     }
 
     if (e.keyCode === 39 && !isRightDisabled) {
