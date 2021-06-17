@@ -1091,7 +1091,7 @@ var Tour = /*#__PURE__*/function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_this), "showStep", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var steps, _this$state, current, focusUnlocked, step, node, stepCallback, target, config, cb;
+      var steps, _this$state, current, focusUnlocked, step, skipProcessing, node, stepCallback, target, config, cb;
 
       return regeneratorRuntime.wrap(function _callee$(_context) {
         while (1) {
@@ -1115,88 +1115,95 @@ var Tour = /*#__PURE__*/function (_Component) {
               }
 
               step = steps[current];
+              skipProcessing = false;
 
               if (!(step.actionBefore && typeof step.actionBefore === 'function')) {
-                _context.next = 9;
+                _context.next = 10;
                 break;
               }
 
-              _context.next = 9;
-              return step.actionBefore();
+              _context.next = 10;
+              return step.actionBefore()["catch"](function () {
+                skipProcessing = true;
 
-            case 9:
-              node = step.selector ? document.querySelector(step.selector) : null;
+                _this.nextStep();
+              });
 
-              stepCallback = function stepCallback(o) {
-                if (step.action && typeof step.action === 'function') {
-                  _this.unlockFocus(function () {
-                    return step.action(o);
-                  });
-                }
-              };
+            case 10:
+              if (!skipProcessing) {
+                node = step.selector ? document.querySelector(step.selector) : null;
 
-              if (step.observe) {
-                target = document.querySelector(step.observe);
-                config = {
-                  attributes: true,
-                  childList: true,
-                  characterData: true
-                };
-
-                _this.setState(function (prevState) {
-                  if (prevState.observer) {
-                    setTimeout(function () {
-                      prevState.observer.disconnect();
-                    }, 0);
+                stepCallback = function stepCallback(o) {
+                  if (step.action && typeof step.action === 'function') {
+                    _this.unlockFocus(function () {
+                      return step.action(o);
+                    });
                   }
+                };
 
-                  return {
-                    observer: new MutationObserver(function (mutations) {
-                      mutations.forEach(function (mutation) {
-                        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                          var cb = function cb() {
-                            return stepCallback(mutation.addedNodes[0]);
-                          };
-
-                          setTimeout(function () {
-                            return _this.calculateNode(mutation.addedNodes[0], step, cb);
-                          }, 100);
-                        } else if (mutation.type === 'childList' && mutation.removedNodes.length > 0) {
-                          var _cb = function _cb() {
-                            return stepCallback(node);
-                          };
-
-                          _this.calculateNode(node, step, _cb);
-                        }
-                      });
-                    })
+                if (step.observe) {
+                  target = document.querySelector(step.observe);
+                  config = {
+                    attributes: true,
+                    childList: true,
+                    characterData: true
                   };
-                }, function () {
-                  return _this.state.observer.observe(target, config);
-                });
-              } else {
-                if (_this.state.observer) {
-                  _this.state.observer.disconnect();
 
-                  _this.setState({
-                    observer: null
+                  _this.setState(function (prevState) {
+                    if (prevState.observer) {
+                      setTimeout(function () {
+                        prevState.observer.disconnect();
+                      }, 0);
+                    }
+
+                    return {
+                      observer: new MutationObserver(function (mutations) {
+                        mutations.forEach(function (mutation) {
+                          if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                            var cb = function cb() {
+                              return stepCallback(mutation.addedNodes[0]);
+                            };
+
+                            setTimeout(function () {
+                              return _this.calculateNode(mutation.addedNodes[0], step, cb);
+                            }, 100);
+                          } else if (mutation.type === 'childList' && mutation.removedNodes.length > 0) {
+                            var _cb = function _cb() {
+                              return stepCallback(node);
+                            };
+
+                            _this.calculateNode(node, step, _cb);
+                          }
+                        });
+                      })
+                    };
+                  }, function () {
+                    return _this.state.observer.observe(target, config);
                   });
+                } else {
+                  if (_this.state.observer) {
+                    _this.state.observer.disconnect();
+
+                    _this.setState({
+                      observer: null
+                    });
+                  }
+                }
+
+                if (node) {
+                  cb = function cb() {
+                    return stepCallback(node);
+                  };
+
+                  _this.calculateNode(node, step, cb);
+                } else {
+                  _this.setState(setNodeState(null, step, _this.helper.current), stepCallback);
+
+                  step.selector && console.warn("Doesn't find a DOM node '".concat(step.selector, "'. Please check the 'steps' Tour prop Array at position ").concat(current, "."));
                 }
               }
 
-              if (node) {
-                cb = function cb() {
-                  return stepCallback(node);
-                };
-
-                _this.calculateNode(node, step, cb);
-              } else {
-                _this.setState(setNodeState(null, step, _this.helper.current), stepCallback);
-
-                step.selector && console.warn("Doesn't find a DOM node '".concat(step.selector, "'. Please check the 'steps' Tour prop Array at position ").concat(current, "."));
-              }
-
-            case 13:
+            case 11:
             case "end":
               return _context.stop();
           }
@@ -1255,7 +1262,7 @@ var Tour = /*#__PURE__*/function (_Component) {
           onRequestClose = _this$props2.onRequestClose;
 
       if (closeWithMask && !e.target.classList.contains(CN.mask.disableInteraction)) {
-        onRequestClose(e);
+        onRequestClose(_this.state.current, e);
       }
     });
 
@@ -1335,7 +1342,7 @@ var Tour = /*#__PURE__*/function (_Component) {
       if (e.keyCode === 27 && !isEscDisabled) {
         // esc
         e.preventDefault();
-        onRequestClose();
+        onRequestClose(_this.state.current);
       }
 
       if (e.keyCode === 39 && !isRightDisabled) {
@@ -1401,7 +1408,7 @@ var Tour = /*#__PURE__*/function (_Component) {
         if (nextProps.steps[this.state.current]) {
           setTimeout(this.showStep, updateDelay);
         } else {
-          this.props.onRequestClose();
+          this.props.onRequestClose(this.state.current);
         }
       }
 
@@ -1575,9 +1582,13 @@ var Tour = /*#__PURE__*/function (_Component) {
           current: current,
           totalSteps: steps.length,
           gotoStep: this.gotoStep,
-          close: onRequestClose,
+          close: function close() {
+            return onRequestClose(_this3.state.current);
+          },
           content: steps[current] && (typeof steps[current].content === 'function' ? steps[current].content({
-            close: onRequestClose,
+            close: function close() {
+              return onRequestClose(_this3.state.current);
+            },
             goTo: this.gotoStep,
             inDOM: inDOM,
             step: current + 1
@@ -1619,7 +1630,9 @@ var Tour = /*#__PURE__*/function (_Component) {
           inverted: true,
           label: lastStepNextButton && current === steps.length - 1 ? lastStepNextButton : nextButton ? nextButton : null
         })), showCloseButton ? /*#__PURE__*/React.createElement(StyledClose, {
-          onClick: onRequestClose,
+          onClick: function onClick() {
+            return onRequestClose(_this3.state.current);
+          },
           className: "reactour__close"
         }) : null))));
       }
