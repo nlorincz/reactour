@@ -612,7 +612,7 @@ var Dot = styled.button(_templateObject$1 || (_templateObject$1 = _taggedTemplat
 
 var _templateObject;
 var SvgMaskWrapper = styled.div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  opacity: ", ";\n  color: ", ";\n  width: 100%;\n  left: 0;\n  top: 0;\n  height: 100%;\n  position: fixed;\n  z-index: 99999;\n  pointer-events: none;\n"])), function (props) {
-  return !props.maskClassName && 0.7;
+  return !props.maskClassName && 0.3;
 }, function (props) {
   return !props.maskClassName && '#000';
 });
