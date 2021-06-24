@@ -614,7 +614,7 @@ var _templateObject;
 var SvgMaskWrapper = styled.div(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  opacity: ", ";\n  color: ", ";\n  width: 100%;\n  left: 0;\n  top: 0;\n  height: 100%;\n  position: fixed;\n  z-index: 99999;\n  pointer-events: none;\n"])), function (props) {
   return !props.maskClassName && 0.3;
 }, function (props) {
-  return !props.maskClassName && '#000';
+  return !props.maskClassName && '#292929';
 });
 function SvgMask(_ref) {
   var windowWidth = _ref.windowWidth,

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 
 const SvgMaskWrapper = styled.div`
   opacity: ${props => !props.maskClassName && 0.3};
-  color: ${props => !props.maskClassName && '#000'};
+  color: ${props => !props.maskClassName && '#292929'};
   width: 100%;
   left: 0;
   top: 0;
