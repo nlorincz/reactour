@@ -335,7 +335,7 @@ class Tour extends Component {
   }
 
   clickHandler = (e) => {
-    e.stopPropagation()
+    document.dispatchEvent(new CustomEvent('mousedown', { detail: 'ignore' }))
   }
 
   keyDownHandler = (e) => {
