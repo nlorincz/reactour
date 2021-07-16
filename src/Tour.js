@@ -107,6 +107,7 @@ class Tour extends Component {
 
     window.addEventListener('resize', this.debouncedShowStep, false)
     window.addEventListener('keydown', this.keyDownHandler, false)
+    window.addEventListener('mousedown', this.clickHandler, false)
   }
 
   unlockFocus = (callback) => {
@@ -264,6 +265,7 @@ class Tour extends Component {
     }, this.onBeforeClose)
     window.removeEventListener('resize', this.debouncedShowStep)
     window.removeEventListener('keydown', this.keyDownHandler)
+    window.removeEventListener('mousedown', this.clickHandler)
   }
 
   onBeforeClose() {
@@ -330,6 +332,10 @@ class Tour extends Component {
         current: nextStep,
       }
     }, this.showStep)
+  }
+
+  clickHandler = (e) => {
+    e.stopPropagation()
   }
 
   keyDownHandler = (e) => {
