@@ -7,6 +7,8 @@ export const propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.element]),
   className: PropTypes.string,
   closeWithMask: PropTypes.bool,
+  customArrowLeft: PropTypes.instanceOf(Element),
+  customArrowRight: PropTypes.instanceOf(Element),
   inViewThreshold: PropTypes.number,
   isOpen: PropTypes.bool.isRequired,
   lastStepNextButton: PropTypes.node,

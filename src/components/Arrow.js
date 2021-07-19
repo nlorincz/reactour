@@ -18,6 +18,8 @@ function Arrow({ className, onClick, inverted, label, disabled }) {
     >
       {label ? (
         <Label>{label}</Label>
+      ) : customSvg ? (
+        { customSvg }
       ) : (
         <svg viewBox="0 0 18.4 14.4">
           <path
@@ -44,13 +46,14 @@ Arrow.propTypes = {
   inverted: PropTypes.bool,
   label: PropTypes.node,
   disabled: PropTypes.bool,
+  customSvg: PropTypes.instanceOf(Element),
 }
 
 export default styled(Arrow)`
-  color: ${props => (props.disabled ? '#caccce' : '#646464')};
+  color: ${(props) => (props.disabled ? '#caccce' : '#646464')};
 
-  ${props => (props.inverted ? 'margin-left: 24px;' : 'margin-right: 24px;')};
-  ${props =>
+  ${(props) => (props.inverted ? 'margin-left: 24px;' : 'margin-right: 24px;')};
+  ${(props) =>
     !props.label &&
     `
     width: 16px;
@@ -59,6 +62,6 @@ export default styled(Arrow)`
   `};
 
   &:hover {
-    color: ${props => (props.disabled ? '#caccce' : '#000')};
+    color: ${(props) => (props.disabled ? '#caccce' : '#000')};
   }
 `
