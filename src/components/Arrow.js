@@ -9,6 +9,7 @@ const Label = styled.span`
 `
 
 function Arrow({ className, onClick, inverted, label, disabled, customSvg }) {
+  console.log('NRB', customSvg)
   return (
     <SvgButton
       className={className}
@@ -19,7 +20,7 @@ function Arrow({ className, onClick, inverted, label, disabled, customSvg }) {
       {label ? (
         <Label>{label}</Label>
       ) : customSvg ? (
-        { customSvg }
+        <>{customSvg}</>
       ) : (
         <svg viewBox="0 0 18.4 14.4">
           <path
