@@ -8,7 +8,7 @@ const Label = styled.span`
   line-height: 1;
 `
 
-function Arrow({ className, onClick, inverted, label, disabled }) {
+function Arrow({ className, onClick, inverted, label, disabled, customSvg }) {
   return (
     <SvgButton
       className={className}
