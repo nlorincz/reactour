@@ -9,6 +9,7 @@ export const propTypes = {
   closeWithMask: PropTypes.bool,
   customArrowLeft: PropTypes.instanceOf(Element),
   customArrowRight: PropTypes.instanceOf(Element),
+  customClose: PropTypes.instanceOf(Element),
   inViewThreshold: PropTypes.number,
   isOpen: PropTypes.bool.isRequired,
   lastStepNextButton: PropTypes.node,
