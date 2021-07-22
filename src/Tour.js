@@ -380,6 +380,7 @@ class Tour extends Component {
       maskClassName,
       showButtons,
       showCloseButton,
+      removeCloseButtonOnLastStep,
       showNavigation,
       showNavigationNumber,
       showNumber,
@@ -581,8 +582,8 @@ class Tour extends Component {
                       )}
                     </Controls>
                   )}
-
-                  {showCloseButton ? (
+                  {removeCloseButtonOnLastStep &&
+                  current === steps.length - 1 ? null : showCloseButton ? (
                     <Close
                       onClick={() => onRequestClose(this.state.current)}
                       className="reactour__close"

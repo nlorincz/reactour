@@ -9,7 +9,6 @@ const Label = styled.span`
 `
 
 function Arrow({ className, onClick, inverted, label, disabled, customSvg }) {
-  console.log('NRB', customSvg)
   return (
     <SvgButton
       className={className}
