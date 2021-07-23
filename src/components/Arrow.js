@@ -8,7 +8,7 @@ const Label = styled.span`
   line-height: 1;
 `
 
-function Arrow({ className, onClick, inverted, label, disabled, customSvg }) {
+function Arrow({ className, onClick, inverted, label, disabled }) {
   return (
     <SvgButton
       className={className}
@@ -17,9 +17,7 @@ function Arrow({ className, onClick, inverted, label, disabled, customSvg }) {
       disabled={disabled}
     >
       {label ? (
-        <Label>{label}</Label>
-      ) : customSvg ? (
-        <>{customSvg}</>
+        <>{label}</>
       ) : (
         <svg viewBox="0 0 18.4 14.4">
           <path
@@ -46,7 +44,7 @@ Arrow.propTypes = {
   inverted: PropTypes.bool,
   label: PropTypes.node,
   disabled: PropTypes.bool,
-  customSvg: PropTypes.instanceOf(Element),
+  customSvg: PropTypes.instanceOf,
 }
 
 export default styled(Arrow)`

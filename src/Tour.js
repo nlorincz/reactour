@@ -530,7 +530,6 @@ class Tour extends Component {
                           }
                           disabled={current === 0}
                           label={prevButton ? prevButton : null}
-                          customSvg={this.props.customArrowLeft}
                         />
                       )}
 
@@ -577,7 +576,6 @@ class Tour extends Component {
                               ? nextButton
                               : null
                           }
-                          customSvg={this.props.customArrowRight}
                         />
                       )}
                     </Controls>

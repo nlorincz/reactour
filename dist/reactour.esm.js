@@ -336,7 +336,7 @@ var SvgButton = styled.button(_templateObject$8 || (_templateObject$8 = _taggedT
 });
 
 var _templateObject$7, _templateObject2;
-var Label = styled.span(_templateObject$7 || (_templateObject$7 = _taggedTemplateLiteral(["\n  font-size: 12px;\n  line-height: 1;\n"])));
+styled.span(_templateObject$7 || (_templateObject$7 = _taggedTemplateLiteral(["\n  font-size: 12px;\n  line-height: 1;\n"])));
 
 function Arrow(_ref) {
   var className = _ref.className,
@@ -349,7 +349,7 @@ function Arrow(_ref) {
     onClick: onClick,
     "data-tour-elem": "".concat(inverted ? 'right' : 'left', "-arrow"),
     disabled: disabled
-  }, label ? /*#__PURE__*/React.createElement(Label, null, label) : /*#__PURE__*/React.createElement("svg", {
+  }, label ? /*#__PURE__*/React.createElement(React.Fragment, null, label) : /*#__PURE__*/React.createElement("svg", {
     viewBox: "0 0 18.4 14.4"
   }, /*#__PURE__*/React.createElement("path", {
     d: inverted ? 'M17 7.2H1M10.8 1L17 7.2l-6.2 6.2' : 'M1.4 7.2h16M7.6 1L1.4 7.2l6.2 6.2',
@@ -366,7 +366,8 @@ Arrow.propTypes = {
   onClick: PropTypes.func.isRequired,
   inverted: PropTypes.bool,
   label: PropTypes.node,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  customSvg: PropTypes.instanceOf
 };
 var Arrow$1 = styled(Arrow)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  color: ", ";\n\n  ", ";\n  ", ";\n\n  &:hover {\n    color: ", ";\n  }\n"])), function (props) {
   return props.disabled ? '#caccce' : '#646464';
@@ -382,11 +383,12 @@ var _templateObject$6;
 
 function Close(_ref) {
   var className = _ref.className,
-      onClick = _ref.onClick;
+      onClick = _ref.onClick,
+      customSvg = _ref.customSvg;
   return /*#__PURE__*/React.createElement(SvgButton, {
     className: className,
     onClick: onClick
-  }, /*#__PURE__*/React.createElement("svg", {
+  }, customSvg ? /*#__PURE__*/React.createElement(React.Fragment, null, customSvg) : /*#__PURE__*/React.createElement("svg", {
     viewBox: "0 0 9.1 9.1"
   }, /*#__PURE__*/React.createElement("path", {
     fill: "currentColor",
@@ -995,9 +997,11 @@ var propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.element]),
   className: PropTypes.string,
   closeWithMask: PropTypes.bool,
+  customClose: PropTypes.instanceOf(Element),
   inViewThreshold: PropTypes.number,
   isOpen: PropTypes.bool.isRequired,
   lastStepNextButton: PropTypes.node,
+  removeCloseButtonOnLastStep: PropTypes.bool,
   maskClassName: PropTypes.string,
   maskSpace: PropTypes.number,
   nextButton: PropTypes.node,
@@ -1044,6 +1048,7 @@ var defaultProps = {
   disableFocusLock: false,
   showNavigation: true,
   showNavigationNumber: true,
+  removeCloseButtonOnLastStep: false,
   showButtons: true,
   showCloseButton: true,
   showNumber: true,
@@ -1488,6 +1493,7 @@ var Tour = /*#__PURE__*/function (_Component) {
           maskClassName = _this$props8.maskClassName,
           showButtons = _this$props8.showButtons,
           showCloseButton = _this$props8.showCloseButton,
+          removeCloseButtonOnLastStep = _this$props8.removeCloseButtonOnLastStep,
           showNavigation = _this$props8.showNavigation,
           showNavigationNumber = _this$props8.showNavigationNumber,
           showNumber = _this$props8.showNumber,
@@ -1574,6 +1580,7 @@ var Tour = /*#__PURE__*/function (_Component) {
           current: current,
           style: steps[current].style ? steps[current].style : {},
           rounded: rounded,
+          "data-tour-elem": "guide-tooltip",
           className: cn(CN.helper.base, className, _defineProperty({}, CN.helper.isOpen, isOpen)),
           accentColor: accentColor,
           defaultStyles: !CustomHelper,
@@ -1629,11 +1636,12 @@ var Tour = /*#__PURE__*/function (_Component) {
           disabled: !lastStepNextButton && current === steps.length - 1,
           inverted: true,
           label: lastStepNextButton && current === steps.length - 1 ? lastStepNextButton : nextButton ? nextButton : null
-        })), showCloseButton ? /*#__PURE__*/React.createElement(StyledClose, {
+        })), removeCloseButtonOnLastStep && current === steps.length - 1 ? null : showCloseButton ? /*#__PURE__*/React.createElement(StyledClose, {
           onClick: function onClick() {
             return onRequestClose(_this3.state.current);
           },
-          className: "reactour__close"
+          className: "reactour__close",
+          customSvg: this.props.customClose
         }) : null))));
       }
 
