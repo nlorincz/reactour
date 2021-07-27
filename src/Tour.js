@@ -529,7 +529,6 @@ class Tour extends Component {
                               : this.prevStep
                           }
                           disabled={current === 0}
-                          disabledFill={this.props.disabledFill}
                           label={prevButton ? prevButton : null}
                         />
                       )}

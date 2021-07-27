@@ -7,9 +7,4 @@ export default styled.button`
   background: none;
   font-size: 0;
   cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
-  ${(props) =>
-    props.disabled
-      ? `fill: ${props.disabledFill};
-  pointer-events: none;`
-      : ''};
 `

@@ -2,30 +2,19 @@ import React from 'react'
 import styled from 'styled-components'
 import SvgButton from './SvgButton'
 import PropTypes from 'prop-types'
-
-const Label = styled.span`
-  font-size: 12px;
-  line-height: 1;
-`
-
-function Arrow({
-  className,
-  onClick,
-  inverted,
-  label,
-  disabled,
-  disabledFill,
-}) {
+function Arrow({ className, onClick, inverted, label, disabled }) {
+  const Label = styled.label`
+    cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
+  `
   return (
     <SvgButton
       className={className}
       onClick={onClick}
       data-tour-elem={`${inverted ? 'right' : 'left'}-arrow`}
       disabled={disabled}
-      disabledFill
     >
       {label ? (
-        <>{label}</>
+        <>{Label}</>
       ) : (
         <svg viewBox="0 0 18.4 14.4">
           <path
