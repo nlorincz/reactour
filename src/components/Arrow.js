@@ -3,9 +3,6 @@ import styled from 'styled-components'
 import SvgButton from './SvgButton'
 import PropTypes from 'prop-types'
 function Arrow({ className, onClick, inverted, label, disabled }) {
-  const Label = styled.label`
-    cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
-  `
   return (
     <SvgButton
       className={className}
@@ -14,7 +11,7 @@ function Arrow({ className, onClick, inverted, label, disabled }) {
       disabled={disabled}
     >
       {label ? (
-        <>{Label}</>
+        <label style={{ cursor: disabled ? 'not-allowed' : 'pointer' }} />
       ) : (
         <svg viewBox="0 0 18.4 14.4">
           <path
