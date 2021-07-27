@@ -8,13 +8,21 @@ const Label = styled.span`
   line-height: 1;
 `
 
-function Arrow({ className, onClick, inverted, label, disabled }) {
+function Arrow({
+  className,
+  onClick,
+  inverted,
+  label,
+  disabled,
+  disabledFill,
+}) {
   return (
     <SvgButton
       className={className}
       onClick={onClick}
       data-tour-elem={`${inverted ? 'right' : 'left'}-arrow`}
       disabled={disabled}
+      disabledFill
     >
       {label ? (
         <>{label}</>

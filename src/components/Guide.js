@@ -11,7 +11,7 @@ const Guide = styled.div`
   padding-right: 40px;
   border-radius: ${props.rounded}px;
   background-color: #fff;
-  padding: 24px 30px;
+  padding: 24px 24px;
   box-shadow: 0 0.5em 3em rgba(0, 0, 0, 0.3);
   color: inherit;
   `

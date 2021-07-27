@@ -8,6 +8,7 @@ export const propTypes = {
   className: PropTypes.string,
   closeWithMask: PropTypes.bool,
   customClose: PropTypes.instanceOf(Element),
+  disabledFill: PropTypes.string,
   inViewThreshold: PropTypes.number,
   isOpen: PropTypes.bool.isRequired,
   lastStepNextButton: PropTypes.node,
